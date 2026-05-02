@@ -1,0 +1,160 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-geist-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Kintsugi: charcoal canvas + gold repairs */
+:root {
+  --kintsugi-gold: #d4af37;
+  --kintsugi-charcoal: #1a1a1a;
+  --background: #1a1a1a;
+  --foreground: #eaeaea;
+  --card: #222222;
+  --card-foreground: #eaeaea;
+  --popover: #222222;
+  --popover-foreground: #eaeaea;
+  --primary: #d4af37;
+  --primary-foreground: #1a1a1a;
+  --secondary: #2c2c2c;
+  --secondary-foreground: #eaeaea;
+  --muted: #2c2c2c;
+  --muted-foreground: #9ca3af;
+  --accent: #3d3420;
+  --accent-foreground: #d4af37;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: color-mix(in srgb, #d4af37 28%, transparent);
+  --input: color-mix(in srgb, #d4af37 18%, #2c2c2c);
+  --ring: #d4af37;
+  --chart-1: #d4af37;
+  --chart-2: #a89030;
+  --chart-3: #6b5d24;
+  --chart-4: #4a4020;
+  --chart-5: #2e2918;
+  --radius: 0.5rem;
+  --sidebar: #1f1f1f;
+  --sidebar-foreground: #eaeaea;
+  --sidebar-primary: #d4af37;
+  --sidebar-primary-foreground: #1a1a1a;
+  --sidebar-accent: #2c2c2c;
+  --sidebar-accent-foreground: #eaeaea;
+  --sidebar-border: color-mix(in srgb, #d4af37 22%, transparent);
+  --sidebar-ring: #d4af37;
+}
+
+.dark {
+  --background: #1a1a1a;
+  --foreground: #eaeaea;
+  --card: #222222;
+  --card-foreground: #eaeaea;
+  --popover: #222222;
+  --popover-foreground: #eaeaea;
+  --primary: #d4af37;
+  --primary-foreground: #1a1a1a;
+  --secondary: #2c2c2c;
+  --secondary-foreground: #eaeaea;
+  --muted: #2c2c2c;
+  --muted-foreground: #9ca3af;
+  --accent: #3d3420;
+  --accent-foreground: #d4af37;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: color-mix(in srgb, #d4af37 28%, transparent);
+  --input: color-mix(in srgb, #d4af37 18%, #2c2c2c);
+  --ring: #d4af37;
+  --chart-1: #d4af37;
+  --chart-2: #a89030;
+  --chart-3: #6b5d24;
+  --chart-4: #4a4020;
+  --chart-5: #2e2918;
+  --sidebar: #1f1f1f;
+  --sidebar-foreground: #eaeaea;
+  --sidebar-primary: #d4af37;
+  --sidebar-primary-foreground: #1a1a1a;
+  --sidebar-accent: #2c2c2c;
+  --sidebar-accent-foreground: #eaeaea;
+  --sidebar-border: color-mix(in srgb, #d4af37 22%, transparent);
+  --sidebar-ring: #d4af37;
+}
+
+@keyframes kintsugi-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes kintsugi-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+    filter: blur(12px);
+  }
+  50% {
+    opacity: 0.85;
+    filter: blur(6px);
+  }
+}
+
+@keyframes kintsugi-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}

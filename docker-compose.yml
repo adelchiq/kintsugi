@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: kintsugi
+      POSTGRES_PASSWORD: kintsugi
+      POSTGRES_DB: kintsugi
+    ports:
+      - "5433:5432"
+    volumes:
+      - kintsugi_pg:/var/lib/postgresql/data
+
+volumes:
+  kintsugi_pg:

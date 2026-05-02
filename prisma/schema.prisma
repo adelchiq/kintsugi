@@ -1,0 +1,109 @@
+// Auth.js adapter + Kintsugi domain models
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LedgerKind {
+  earn_reuse
+  salvage_submitted
+  adjustment
+}
+
+enum AssetCategory {
+  DATA_SCIENCE
+  ENGINEERING
+  FRONTEND_MODULES
+  MARKET_RESEARCH
+}
+
+// --- Auth.js / NextAuth (via @auth/prisma-adapter) ---
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+
+  accounts Account[]
+  sessions Session[]
+
+  /// Mianzi / reputation (contributor-facing)
+  mianziCredits         Int     @default(0)
+  totalReusesReceived   Int     @default(0)
+  contributorPercentile Int     @default(88)
+  brilliantOriginalFlag Boolean @default(false)
+
+  assets        SalvagedAsset[] @relation("ContributorAssets")
+  ledgerEntries LedgerEntry[]
+}
+
+model SalvagedAsset {
+  id                   String        @id @default(cuid())
+  title                String
+  description          String        @db.Text
+  category             AssetCategory
+  devHoursSaved        Int
+  technicalGoldSummary String        @db.Text
+  postMortemSnippet    String        @db.Text
+  featuredPostMortem   Boolean       @default(false)
+  reuseCount           Int           @default(0)
+  contributorId        String
+  contributor          User          @relation("ContributorAssets", fields: [contributorId], references: [id], onDelete: Cascade)
+  createdAt            DateTime      @default(now())
+
+  ledgerEntries LedgerEntry[]
+}
+
+model LedgerEntry {
+  id        String      @id @default(cuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      LedgerKind
+  delta     Int
+  label     String
+  assetId   String?
+  asset     SalvagedAsset? @relation(fields: [assetId], references: [id], onDelete: SetNull)
+  createdAt DateTime    @default(now())
+}

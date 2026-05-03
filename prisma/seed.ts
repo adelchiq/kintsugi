@@ -35,7 +35,6 @@ async function main() {
         email: c.email,
         mianziCredits: c.id === "seed_demo_owner" ? 120 : 40,
         totalReusesReceived: c.id === "seed_demo_owner" ? 4 : 0,
-        contributorPercentile: c.id === "seed_demo_owner" ? 88 : 72,
       },
       update: { name: c.name },
     });

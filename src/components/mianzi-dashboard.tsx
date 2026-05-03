@@ -1,9 +1,10 @@
 "use client";
 
-import { Award, Shield, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { Award, Sparkles } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -18,13 +19,13 @@ import {
   CREDITS_PER_REUSE,
   MASTER_REFORMER_THRESHOLD,
 } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 export function MianziDashboard() {
   const {
     ledger,
     profile,
     masterReformer,
-    fsiVerified,
     brilliantOriginal,
     refresh,
     loading,
@@ -49,6 +50,14 @@ export function MianziDashboard() {
           <span className="text-[#d4af37]">{CREDITS_PER_REUSE}</span> credits—a ledger-backed
           credential that reframes failure as disciplined craft.
         </p>
+        <div className="flex flex-wrap gap-2 pt-2">
+          <Link href="/leaderboard" className={cn(buttonVariants({ variant: "outline", size: "sm" }))}>
+            Global leaderboard
+          </Link>
+          <Link href="/marketplace" className={cn(buttonVariants({ variant: "outline", size: "sm" }))}>
+            Mianzi marketplace
+          </Link>
+        </div>
       </header>
 
       <Card
@@ -64,8 +73,7 @@ export function MianziDashboard() {
               {profile.displayName}
             </CardTitle>
             <CardDescription>
-              Contributor percentile {profile.contributorPercentile}% · Salvages{" "}
-              {profile.salvagedAssetIds.length}
+              Salvages indexed: {profile.salvagedAssetIds.length}
             </CardDescription>
           </div>
           <div className="text-right">
@@ -112,18 +120,6 @@ export function MianziDashboard() {
               Brilliant Original
               {brilliantOriginal ? " · homepage feature eligible" : ""}
             </Badge>
-            <Badge
-              variant="outline"
-              className={
-                fsiVerified
-                  ? "gap-1 border-emerald-400/60 bg-emerald-500/10 text-emerald-200"
-                  : "gap-1 opacity-60"
-              }
-            >
-              <Shield className="size-3.5" />
-              FSI Verified
-              {fsiVerified ? " · first-look internships / networking" : ""}
-            </Badge>
           </div>
 
           <Separator className="bg-[#d4af37]/15" />
@@ -146,7 +142,11 @@ export function MianziDashboard() {
                   </div>
                   <span
                     className={
-                      entry.delta > 0 ? "font-medium text-[#d4af37]" : "text-muted-foreground"
+                      entry.delta > 0
+                        ? "font-medium text-[#d4af37]"
+                        : entry.delta < 0
+                          ? "font-medium text-destructive"
+                          : "text-muted-foreground"
                     }
                   >
                     {entry.delta === 0 ? "—" : `${entry.delta > 0 ? "+" : ""}${entry.delta}`}

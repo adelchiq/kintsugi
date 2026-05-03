@@ -13,6 +13,7 @@ enum LedgerKind {
   earn_reuse
   salvage_submitted
   adjustment
+  marketplace_purchase
 }
 
 enum AssetCategory {
@@ -72,7 +73,6 @@ model User {
   /// Mianzi / reputation (contributor-facing)
   mianziCredits         Int     @default(0)
   totalReusesReceived   Int     @default(0)
-  contributorPercentile Int     @default(88)
   brilliantOriginalFlag Boolean @default(false)
 
   assets        SalvagedAsset[] @relation("ContributorAssets")

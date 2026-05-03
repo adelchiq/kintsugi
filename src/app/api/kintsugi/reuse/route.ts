@@ -47,10 +47,6 @@ export async function POST(req: Request) {
       }
 
       const newTotal = contributor.totalReusesReceived + 1;
-      const pctBump = newTotal % 4 === 0 ? 1 : 0;
-      const contributorPercentile = pctBump
-        ? Math.min(99, contributor.contributorPercentile + pctBump)
-        : contributor.contributorPercentile;
 
       await tx.salvagedAsset.update({
         where: { id: asset.id },
@@ -62,7 +58,6 @@ export async function POST(req: Request) {
         data: {
           mianziCredits: { increment: CREDITS_PER_REUSE },
           totalReusesReceived: newTotal,
-          contributorPercentile,
         },
       });
 

@@ -27,7 +27,6 @@ const GUEST_PROFILE: UserProfile = {
   totalReusesReceived: 0,
   salvagedAssetIds: [],
   brilliantOriginal: false,
-  contributorPercentile: 0,
 };
 
 interface AppContextValue {
@@ -40,7 +39,6 @@ interface AppContextValue {
   refresh: () => Promise<void>;
   masterReformer: boolean;
   brilliantOriginal: boolean;
-  fsiVerified: boolean;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -100,7 +98,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
+        const err = (await res.json().catch(() => ({}))) as {
+          error?: string;
+          reasons?: string[];
+        };
+        if (err.error === "low_quality" && err.reasons?.length) {
+          throw new Error(err.reasons.join(" "));
+        }
         throw new Error(
           typeof err.error === "string" ? err.error : "salvage_failed",
         );
@@ -130,7 +134,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo<AppContextValue>(() => {
     const masterReformer =
       profile.totalReusesReceived >= MASTER_REFORMER_THRESHOLD;
-    const fsiVerified = profile.contributorPercentile >= 90;
     return {
       assets,
       profile,
@@ -141,7 +144,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       refresh,
       masterReformer,
       brilliantOriginal: profile.brilliantOriginal,
-      fsiVerified,
     };
   }, [
     assets,

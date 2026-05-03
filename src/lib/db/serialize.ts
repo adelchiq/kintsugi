@@ -39,6 +39,5 @@ export function serializeProfile(user: User, salvagedAssetIds: string[]): UserPr
     totalReusesReceived: user.totalReusesReceived,
     salvagedAssetIds,
     brilliantOriginal: user.brilliantOriginalFlag,
-    contributorPercentile: user.contributorPercentile,
   };
 }

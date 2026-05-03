@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { categoryToDb } from "@/lib/db/map-enums";
 import { prisma } from "@/lib/prisma";
+import { assessSalvageQuality } from "@/lib/salvage-quality";
 import type { SalvagePayload } from "@/lib/types";
 
 export async function POST(req: Request) {
@@ -24,6 +25,20 @@ export async function POST(req: Request) {
     return Response.json({ error: "missing_fields" }, { status: 400 });
   }
 
+  const quality = assessSalvageQuality({
+    fileName: body.fileName ?? "upload.txt",
+    fileContent: body.fileContent ?? "",
+    technicalGoldSummary: body.technicalGoldSummary,
+    postMortemSnippet: body.postMortemSnippet,
+  });
+
+  if (!quality.ok) {
+    return Response.json(
+      { error: "low_quality", reasons: quality.reasons },
+      { status: 422 },
+    );
+  }
+
   const brilliantOriginal = !!body.brilliantOriginal;
 
   try {
@@ -31,17 +46,10 @@ export async function POST(req: Request) {
       where: { id: session.user.id },
     });
 
-    const percentileBump = brilliantOriginal ? 2 : 1;
-    const contributorPercentile = Math.min(
-      99,
-      user.contributorPercentile + percentileBump,
-    );
-
     const asset = await prisma.$transaction(async (tx) => {
       await tx.user.update({
         where: { id: session.user.id },
         data: {
-          contributorPercentile,
           brilliantOriginalFlag:
             user.brilliantOriginalFlag || brilliantOriginal,
         },

@@ -144,12 +144,23 @@ export function HomeView() {
             </Card>
             <Card className="border-[#d4af37]/20 shadow-none">
               <CardHeader>
-                <CardTitle className="font-heading text-base">FSI Verified</CardTitle>
-                <CardDescription>Top 10% contributor percentile.</CardDescription>
+                <CardTitle className="font-heading text-base">Mianzi marketplace</CardTitle>
+                <CardDescription>
+                  Spend credits on AI API bundles and AWS / Azure / GCP blocks.
+                </CardDescription>
               </CardHeader>
-              <CardContent className="text-muted-foreground text-sm">
-                Reward: “First Look” internships and curated networking with Future Skills
-                Institute partners (workflow stub).
+              <CardContent className="text-muted-foreground flex flex-col gap-3 text-sm">
+                <p>
+                  Leaderboards rank contributors by Mianzi earned from reuse; the marketplace is
+                  where those credits convert into real tooling budgets (fulfillment via partner
+                  workflows).
+                </p>
+                <Link
+                  href="/marketplace"
+                  className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-fit")}
+                >
+                  Browse marketplace
+                </Link>
               </CardContent>
             </Card>
           </div>

@@ -20,7 +20,7 @@ export function buildDocMarkdown(asset: SalvagedAsset): string {
 
 export function buildPersonalizationPrompt(asset: SalvagedAsset): string {
   return [
-    "You are helping a student adapt a salvaged asset for a new course or internship project.",
+    "You are helping a student adapt a salvaged asset for a new course or personal project.",
     "",
     `Asset title: "${asset.title}"`,
     `Domain: ${asset.category}`,

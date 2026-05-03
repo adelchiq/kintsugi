@@ -20,7 +20,11 @@ export interface SalvagedAsset {
   createdAt: string;
 }
 
-export type LedgerKind = "earn_reuse" | "salvage_submitted" | "adjustment";
+export type LedgerKind =
+  | "earn_reuse"
+  | "salvage_submitted"
+  | "adjustment"
+  | "marketplace_purchase";
 
 export interface LedgerEntry {
   id: string;
@@ -39,8 +43,6 @@ export interface UserProfile {
   totalReusesReceived: number;
   salvagedAssetIds: string[];
   brilliantOriginal: boolean;
-  /** Simulated: contributor percentile for FSI gate */
-  contributorPercentile: number;
 }
 
 export const CREDITS_PER_REUSE = 10;
@@ -56,4 +58,9 @@ export type SalvagePayload = Omit<
   | "reuseCount"
   | "createdAt"
   | "featuredPostMortem"
-> & { brilliantOriginal: boolean };
+> & {
+  brilliantOriginal: boolean;
+  /** Raw upload text for quality gate (not persisted) */
+  fileContent?: string;
+  fileName?: string;
+};

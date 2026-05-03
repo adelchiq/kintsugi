@@ -106,6 +106,8 @@ export function SalvagePortal() {
       technicalGoldSummary: technicalGold.trim(),
       postMortemSnippet: postMortemSnippet.trim(),
       brilliantOriginal,
+      fileContent: fileText,
+      fileName: fileName || undefined,
     };
     setSubmitError(null);
     try {
@@ -118,10 +120,12 @@ export function SalvagePortal() {
       setFileName("");
       setTechnicalGold("");
       setAiNote(null);
-    } catch {
-      setSubmitError(
-        "Could not save salvage. Ensure Postgres is running and try again.",
-      );
+    } catch (e) {
+      const msg =
+        e instanceof Error && e.message
+          ? e.message
+          : "Could not save salvage. Ensure Postgres is running and try again.";
+      setSubmitError(msg);
     }
   };
 
@@ -145,9 +149,15 @@ export function SalvagePortal() {
             Upload orphaned assets
           </h1>
           <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
-            Publish SQL schemas, scripts, papers, or UI modules that outlived their product.
-            A concise post-mortem turns sunset into a credential; AI Auto-Doc surfaces the
-            technical gold for the Legacy Library.
+            Publish SQL schemas, functional Python scripts, structured research, or UI modules that
+            outlived their product. The AI scans your files to surface real{" "}
+            <span className="text-foreground/90">technical gold</span>—reusable patterns peers can
+            trust. A concise post-mortem turns sunset into a credential.
+          </p>
+          <p className="text-muted-foreground max-w-2xl text-xs leading-relaxed">
+            If someone uploads random junk (empty files, gibberish, or non-functional fragments),
+            the quality gate flags it as low-utility and blocks the salvage so the Legacy Library
+            stays high-signal.
           </p>
         </header>
 
@@ -155,8 +165,11 @@ export function SalvagePortal() {
           <CardHeader>
             <CardTitle className="font-heading text-lg">Asset intake</CardTitle>
             <CardDescription>
-              Attach plaintext sources (≤ ~200KB practical limit). We scan server-side when an
-              API key is configured.
+              Attach plaintext sources (practical limit ~200KB). Run{" "}
+              <strong className="text-foreground/90">AI Auto-Doc</strong> to extract bullets; the
+              same payload is checked server-side for substance. With{" "}
+              <code className="text-foreground/80">OPENAI_API_KEY</code> set, scans use your LLM;
+              otherwise heuristics apply.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">

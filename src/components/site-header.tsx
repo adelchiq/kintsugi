@@ -9,6 +9,8 @@ const NAV = [
   { href: "/", label: "Home" },
   { href: "/salvage", label: "Salvage Portal" },
   { href: "/library", label: "Legacy Library" },
+  { href: "/leaderboard", label: "Leaderboard" },
+  { href: "/marketplace", label: "Marketplace" },
   { href: "/mianzi", label: "Mianzi Ledger" },
 ];
 

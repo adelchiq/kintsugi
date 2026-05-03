@@ -10,12 +10,11 @@ import {
   useState,
 } from "react";
 
-import {
-  MASTER_REFORMER_THRESHOLD,
-  type LedgerEntry,
-  type SalvagedAsset,
-  type SalvagePayload,
-  type UserProfile,
+import type {
+  LedgerEntry,
+  SalvagedAsset,
+  SalvagePayload,
+  UserProfile,
 } from "@/lib/types";
 
 export type { SalvagePayload } from "@/lib/types";
@@ -37,8 +36,6 @@ interface AppContextValue {
   dispatchSalvage: (payload: SalvagePayload) => Promise<void>;
   recordReuse: (assetId: string) => Promise<{ ok: boolean; error?: string }>;
   refresh: () => Promise<void>;
-  masterReformer: boolean;
-  brilliantOriginal: boolean;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -132,8 +129,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   );
 
   const value = useMemo<AppContextValue>(() => {
-    const masterReformer =
-      profile.totalReusesReceived >= MASTER_REFORMER_THRESHOLD;
     return {
       assets,
       profile,
@@ -142,8 +137,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       dispatchSalvage,
       recordReuse,
       refresh,
-      masterReformer,
-      brilliantOriginal: profile.brilliantOriginal,
     };
   }, [
     assets,

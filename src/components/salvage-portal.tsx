@@ -266,7 +266,7 @@ export function SalvagePortal() {
                     </span>
                     <span className="text-[#d4af37]/90">
                       {brilliantOriginal
-                        ? "Eligible · Brilliant Original"
+                        ? "Eligible · homepage feature"
                         : `${sunsetReason.trim().length}/${BRILLIANT_POST_MORTEM_MIN} chars`}
                     </span>
                   </div>

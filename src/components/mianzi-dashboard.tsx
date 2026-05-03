@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Award, Sparkles } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -12,29 +10,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { useApp } from "@/context/app-context";
-import {
-  CREDITS_PER_REUSE,
-  MASTER_REFORMER_THRESHOLD,
-} from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export function MianziDashboard() {
-  const {
-    ledger,
-    profile,
-    masterReformer,
-    brilliantOriginal,
-    refresh,
-    loading,
-  } = useApp();
-
-  const reformerProgress = Math.min(
-    100,
-    Math.round((profile.totalReusesReceived / MASTER_REFORMER_THRESHOLD) * 100),
-  );
+  const { ledger, profile, refresh, loading } = useApp();
 
   return (
     <div className="mx-auto max-w-4xl space-y-8 py-10">
@@ -46,9 +27,8 @@ export function MianziDashboard() {
           Credits ledger
         </h1>
         <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
-          Mianzi turns sunsets into social proof. Each reuse of your salvage yields{" "}
-          <span className="text-[#d4af37]">{CREDITS_PER_REUSE}</span> credits—a ledger-backed
-          credential that reframes failure as disciplined craft.
+          Mianzi credits accrue when others reuse your salvages. Spend them in the marketplace on
+          AI and cloud bundles, or climb the global leaderboard.
         </p>
         <div className="flex flex-wrap gap-2 pt-2">
           <Link href="/leaderboard" className={cn(buttonVariants({ variant: "outline", size: "sm" }))}>
@@ -60,13 +40,7 @@ export function MianziDashboard() {
         </div>
       </header>
 
-      <Card
-        className={`overflow-hidden border-[#d4af37]/30 shadow-none ${
-          masterReformer
-            ? "ring-2 ring-[#d4af37]/55 shadow-[0_0_40px_rgba(212,175,55,0.12)]"
-            : ""
-        }`}
-      >
+      <Card className="overflow-hidden border-[#d4af37]/30 shadow-none">
         <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <CardTitle className="font-heading text-xl">
@@ -85,43 +59,6 @@ export function MianziDashboard() {
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div>
-            <div className="mb-2 flex justify-between text-xs">
-              <span className="text-muted-foreground">
-                Master Reformer ({MASTER_REFORMER_THRESHOLD}+ reuses)
-              </span>
-              <span>{profile.totalReusesReceived} recorded</span>
-            </div>
-            <Progress value={reformerProgress} className="h-2" />
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            <Badge
-              variant="outline"
-              className={
-                masterReformer
-                  ? "gap-1 border-[#d4af37] bg-[#d4af37]/10 text-[#d4af37]"
-                  : "gap-1 opacity-60"
-              }
-            >
-              <Sparkles className="size-3.5" />
-              Master Reformer
-              {masterReformer ? " · gold profile border" : ""}
-            </Badge>
-            <Badge
-              variant="outline"
-              className={
-                brilliantOriginal
-                  ? "gap-1 border-[#d4af37]/70 bg-[#d4af37]/10 text-[#d4af37]"
-                  : "gap-1 opacity-60"
-              }
-            >
-              <Award className="size-3.5" />
-              Brilliant Original
-              {brilliantOriginal ? " · homepage feature eligible" : ""}
-            </Badge>
-          </div>
-
           <Separator className="bg-[#d4af37]/15" />
 
           <div className="space-y-3">

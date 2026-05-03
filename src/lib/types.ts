@@ -46,7 +46,6 @@ export interface UserProfile {
 }
 
 export const CREDITS_PER_REUSE = 10;
-export const MASTER_REFORMER_THRESHOLD = 5;
 export const DEV_TIME_TARGET_PCT = 30;
 
 /** Payload from Salvage Portal → POST /api/kintsugi/salvage */

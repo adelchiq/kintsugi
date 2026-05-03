@@ -181,7 +181,7 @@ export function LibraryView() {
                 <Badge variant="outline">{asset.category}</Badge>
                 {asset.featuredPostMortem ? (
                   <Badge className="border-[#d4af37]/40 bg-[#d4af37]/15 text-[#d4af37]">
-                    Brilliant Original
+                    Featured
                   </Badge>
                 ) : null}
               </div>

@@ -54,6 +54,12 @@ export function HomeView() {
               >
                 Browse Legacy Library
               </Link>
+              <Link
+                href="/leaderboard"
+                className={cn(buttonVariants({ variant: "outline" }))}
+              >
+                Global leaderboard
+              </Link>
             </div>
           </div>
           <Card className="w-full max-w-sm border-[#d4af37]/35 bg-[#1f1f1f]/80 shadow-none backdrop-blur-sm">
@@ -76,8 +82,8 @@ export function HomeView() {
             Featured post-mortems
           </h2>
           <p className="text-muted-foreground text-sm">
-            Brilliant Original narratives surface on the homepage—sharp storytelling plus reusable
-            artifacts.
+            Strong narratives and reusable artifacts surface here first—discover them before you
+            build from scratch.
           </p>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
@@ -112,64 +118,34 @@ export function HomeView() {
 
       <section className="border-t border-[#d4af37]/15 bg-[#141414]/80">
         <div className="mx-auto max-w-6xl space-y-8 px-4 py-14">
-          <h2 className="font-heading text-2xl font-semibold tracking-tight">
-            Recognition tiers
-          </h2>
-          <div className="grid gap-6 md:grid-cols-3">
-            <Card className="border-[#d4af37]/20 shadow-none">
-              <CardHeader>
-                <CardTitle className="font-heading text-base">
-                  Master Reformer
-                </CardTitle>
-                <CardDescription>
-                  Five or more community reuses across your salvages.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="text-muted-foreground text-sm">
-                Reward: gold profile border + elevated visibility in mentor matching (demo UI).
-              </CardContent>
-            </Card>
-            <Card className="border-[#d4af37]/20 shadow-none">
-              <CardHeader>
-                <CardTitle className="font-heading text-base">
-                  Brilliant Original
-                </CardTitle>
-                <CardDescription>
-                  Deep post-mortem narrative (&gt;220 chars of reflective detail).
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="text-muted-foreground text-sm">
-                Reward: eligibility for homepage featuring alongside proven reuse metrics.
-              </CardContent>
-            </Card>
-            <Card className="border-[#d4af37]/20 shadow-none">
-              <CardHeader>
-                <CardTitle className="font-heading text-base">Mianzi marketplace</CardTitle>
-                <CardDescription>
-                  Spend credits on AI API bundles and AWS / Azure / GCP blocks.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="text-muted-foreground flex flex-col gap-3 text-sm">
-                <p>
-                  Leaderboards rank contributors by Mianzi earned from reuse; the marketplace is
-                  where those credits convert into real tooling budgets (fulfillment via partner
-                  workflows).
-                </p>
-                <Link
-                  href="/marketplace"
-                  className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-fit")}
-                >
-                  Browse marketplace
-                </Link>
-              </CardContent>
-            </Card>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-2xl space-y-2">
+              <h2 className="font-heading text-2xl font-semibold tracking-tight">
+                Global leaderboard
+              </h2>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Rankings are by Mianzi credits—mostly from community reuse of your salvages. Open
+                the leaderboard anytime to see who is contributing the most durable technical gold.
+              </p>
+            </div>
+            <Link href="/leaderboard" className={cn(buttonVariants(), "w-fit shrink-0")}>
+              View leaderboard
+            </Link>
           </div>
           <Separator className="bg-[#d4af37]/15" />
-          <p className="text-muted-foreground max-w-3xl text-sm leading-relaxed">
-            Every export from the Legacy Library opens the Smart Bridge: markdown documentation,
-            Notion / Google Docs jump links, and an AI helper prompt so the next student can
-            personalize the salvage in minutes—not days.
-          </p>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <p className="text-muted-foreground max-w-3xl text-sm leading-relaxed">
+              Every export from the Legacy Library opens the Smart Bridge: markdown documentation,
+              Notion / Google Docs jump links, and an AI helper prompt so the next student can
+              personalize the salvage in minutes—not days.
+            </p>
+            <Link
+              href="/marketplace"
+              className={cn(buttonVariants({ variant: "outline" }), "w-fit shrink-0")}
+            >
+              Mianzi marketplace
+            </Link>
+          </div>
         </div>
       </section>
     </div>

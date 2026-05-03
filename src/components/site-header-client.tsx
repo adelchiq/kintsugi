@@ -8,7 +8,7 @@ import { useApp } from "@/context/app-context";
 import { cn } from "@/lib/utils";
 
 export function HeaderMianziBadge() {
-  const { profile, masterReformer } = useApp();
+  const { profile } = useApp();
 
   if (profile.id === "guest") {
     return null;
@@ -18,10 +18,7 @@ export function HeaderMianziBadge() {
     <Link
       href="/mianzi"
       className={cn(
-        "hidden shrink-0 items-center rounded-full border px-3 py-1 text-xs font-medium sm:flex",
-        masterReformer
-          ? "border-[#d4af37] bg-[#d4af37]/10 text-[#d4af37] shadow-[0_0_0_1px_rgba(212,175,55,0.35)]"
-          : "border-[#d4af37]/30 text-muted-foreground hover:text-foreground",
+        "hidden shrink-0 items-center rounded-full border border-[#d4af37]/30 px-3 py-1 text-xs font-medium text-muted-foreground hover:text-foreground sm:flex",
       )}
     >
       <span className="text-[#d4af37]/80">Mianzi</span>

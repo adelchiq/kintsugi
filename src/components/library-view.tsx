@@ -3,6 +3,7 @@
 import { Download, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { PrototypeBanner } from "@/components/prototype-banner";
 import { SmartBridgeExport } from "@/components/smart-bridge-export";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,7 +25,7 @@ import { CREDITS_PER_REUSE, DEV_TIME_TARGET_PCT } from "@/lib/types";
 const ALL = "All categories" as const;
 
 export function LibraryView() {
-  const { assets, profile, recordReuse } = useApp();
+  const { assets, profile, recordReuse, isPrototype } = useApp();
   const [q, setQ] = useState("");
   const [category, setCategory] = useState<AssetCategory | typeof ALL>(ALL);
   const [minHours, setMinHours] = useState(0);
@@ -71,15 +72,10 @@ export function LibraryView() {
       return;
     }
 
-    if (asset.contributorId === profile.id) {
-      setToast(
-        `+${CREDITS_PER_REUSE} Mianzi credited — community reused your salvage.`,
-      );
-    } else {
-      setToast(
+    setToast(
+      result.message ??
         `Reuse logged · ${asset.contributorName} earns +${CREDITS_PER_REUSE} Mianzi.`,
-      );
-    }
+    );
     window.setTimeout(() => setToast(null), 4200);
   };
 
@@ -96,6 +92,7 @@ export function LibraryView() {
           Filter by category and estimated hours reclaimed. Every clone or download feeds the
           Mianzi ledger—failure becomes a measurable signal of mastery.
         </p>
+        {isPrototype ? <PrototypeBanner /> : null}
       </header>
 
       <Card className="border-[#d4af37]/25">

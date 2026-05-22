@@ -1,8 +1,8 @@
 "use client";
 
 import { Trophy } from "lucide-react";
-import { useEffect, useState } from "react";
 
+import { PrototypeBanner } from "@/components/prototype-banner";
 import {
   Card,
   CardContent,
@@ -10,38 +10,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-interface Row {
-  rank: number;
-  id: string;
-  displayName: string;
-  mianziCredits: number;
-}
+import { useApp } from "@/context/app-context";
 
 export function LeaderboardView() {
-  const [entries, setEntries] = useState<Row[]>([]);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    void (async () => {
-      try {
-        const res = await fetch("/api/leaderboard");
-        const data = (await res.json()) as { entries?: Row[]; error?: string };
-        if (!res.ok) throw new Error(data.error ?? "failed");
-        if (!cancelled) setEntries(data.entries ?? []);
-      } catch {
-        if (!cancelled) setError("Could not load leaderboard.");
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const { leaderboard, loading, isPrototype } = useApp();
 
   return (
     <div className="mx-auto max-w-3xl space-y-8 py-10">
-      <header className="space-y-2">
+      <header className="space-y-3">
         <p className="text-[#d4af37]/85 text-xs font-medium tracking-[0.25em] uppercase">
           Global leaderboard
         </p>
@@ -49,10 +25,10 @@ export function LeaderboardView() {
           Top contributors by Mianzi
         </h1>
         <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
-          Rankings reflect Mianzi credits earned from community reuse of your salvages (and
-          opening balances where seeded). Spend credits in the marketplace on API and cloud
-          bundles.
+          Rankings reflect Mianzi credits—mostly from community reuse of salvaged assets. In
+          prototype mode, clone/download in the library updates standings in your browser.
         </p>
+        {isPrototype ? <PrototypeBanner /> : null}
       </header>
 
       <Card className="border-[#d4af37]/25 shadow-none">
@@ -60,17 +36,21 @@ export function LeaderboardView() {
           <Trophy className="text-[#d4af37] size-6" />
           <div>
             <CardTitle className="font-heading text-lg">Standings</CardTitle>
-            <CardDescription>Top 50 · updated on each page load</CardDescription>
+            <CardDescription>
+              {isPrototype
+                ? "Demo contributors + your simulated activity"
+                : "Top 50 · from database"}
+            </CardDescription>
           </div>
         </CardHeader>
         <CardContent>
-          {error ? (
-            <p className="text-muted-foreground text-sm">{error}</p>
-          ) : entries.length === 0 ? (
+          {loading && leaderboard.length === 0 ? (
+            <p className="text-muted-foreground text-sm">Loading…</p>
+          ) : leaderboard.length === 0 ? (
             <p className="text-muted-foreground text-sm">No contributors yet.</p>
           ) : (
             <ol className="divide-y divide-[#d4af37]/15">
-              {entries.map((e) => (
+              {leaderboard.map((e) => (
                 <li
                   key={e.id}
                   className="flex items-center justify-between gap-4 py-3 first:pt-0"

@@ -39,8 +39,8 @@ export default function RootLayout({
           <SiteHeader githubAuthConfigured={githubAuth} />
           <main className="flex-1">{children}</main>
           <footer className="border-t border-[#d4af37]/15 py-6 text-center text-xs text-muted-foreground">
-            Kintsugi · Mianzi ledger and salvages persist in PostgreSQL. Sign in with GitHub to
-            contribute.
+            Kintsugi · Prototype demo: library and leaderboard use sample data; sign in with
+            GitHub to simulate salvage, reuse, and Mianzi in your browser.
           </footer>
         </Providers>
       </body>

@@ -4,6 +4,7 @@ import { Cloud, Cpu, ShoppingCart } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
+import { PrototypeBanner } from "@/components/prototype-banner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,11 +25,11 @@ function categoryIcon(c: MarketplaceCategory) {
 
 export function MarketplaceView() {
   const { data: session } = useSession();
-  const { profile, refresh } = useApp();
+  const { profile, purchaseMarketplace, isPrototype } = useApp();
   const [busyId, setBusyId] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
-  const buy = async (listingId: string) => {
+  const buy = async (listingId: string, price: number, label: string) => {
     if (!session?.user) {
       setToast("Sign in to spend Mianzi credits.");
       window.setTimeout(() => setToast(null), 4000);
@@ -37,23 +38,14 @@ export function MarketplaceView() {
     setBusyId(listingId);
     setToast(null);
     try {
-      const res = await fetch("/api/marketplace/purchase", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ listingId }),
-      });
-      const data = (await res.json()) as {
-        ok?: boolean;
-        fulfillment?: string;
-        message?: string;
-        error?: string;
-      };
-      if (!res.ok) {
-        setToast(data.message ?? data.error ?? "Purchase failed.");
+      const result = await purchaseMarketplace(listingId, price, label);
+      if (!result.ok) {
+        setToast(result.error ?? "Purchase failed.");
         return;
       }
-      setToast(data.fulfillment ?? "Purchase recorded in your ledger.");
-      await refresh();
+      setToast(
+        result.fulfillment ?? "Purchase recorded in your ledger.",
+      );
     } catch {
       setToast("Network error.");
     } finally {
@@ -77,6 +69,7 @@ export function MarketplaceView() {
           <span className="text-[#d4af37]">{profile.mianziCredits}</span> Mianzi
           {profile.id === "guest" ? " (sign in to purchase)" : ""}.
         </p>
+        {isPrototype ? <PrototypeBanner /> : null}
       </header>
 
       {toast ? (
@@ -109,7 +102,7 @@ export function MarketplaceView() {
               <Button
                 type="button"
                 disabled={busyId === item.id || profile.id === "guest"}
-                onClick={() => void buy(item.id)}
+                onClick={() => void buy(item.id, item.priceMianzi, item.title)}
               >
                 {busyId === item.id ? "Processing…" : "Redeem"}
               </Button>
